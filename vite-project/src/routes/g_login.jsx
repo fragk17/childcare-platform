@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
+import BackButton from "../components/back_button"
 
 const G_login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -10,9 +11,10 @@ const G_login = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <Navbar />
-      <div className="flex flex-1 items-center justify-center py-12">
+      <BackButton />
+      <div className="flex-1 flex items-center justify-center py-11">
         <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold text-center text-gray-800">
             {isSignUp ? 'Εγγραφή Γονέα' : 'Σύνδεση Γονέα'}

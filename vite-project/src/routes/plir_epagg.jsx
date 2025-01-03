@@ -2,6 +2,8 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import Navbar from "../components/navbar"
 import Footer from "../components/footer"
+import BackButton from "../components/back_button"
+
 import React from 'react'
 
 const Plir_epagg = () =>  {
@@ -9,6 +11,7 @@ const Plir_epagg = () =>  {
   return (
     <div>
         <Navbar />
+        <BackButton />
         <div className="font-khula flex flex-col text-center justify-center px-10 pt-[30px] text-2xl leading-none" >
             <p className="font-bold">ΠΛΗΡΟΦΟΡΙΕΣ ΕΠΑΓΓΕΛΜΑΤΙΑ</p>
             <p className=" flex-grow pt-[30px]">

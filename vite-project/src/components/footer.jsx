@@ -5,6 +5,7 @@ const Footer = () => {
   return (
     <div>
       <footer className="absolute gap-52 bottom-0 w-full flex bg-white py-8 px-10 md:px-32">
+      {/* <footer className="w-full bg-white bottom-0 absolute gap-52 py-8 px-10 md:px-32"> */}
           <div>
             <p className="font-bold ">ΕΠΙΚΟΙΝΩΝΙΑ</p>
             <div className="flex gap-4">

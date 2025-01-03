@@ -8,6 +8,9 @@ import Plir_epagg from "./routes/plir_epagg"
 import G_login from "./routes/g_login"
 import E_login from "./routes/e_login"
 
+
+// https://www.figma.com/design/n77y1eExg5FYmlzcq20kI4/EAM?node-id=148-3317&t=lTpNKkdTKZ1vMwee-0
+
 function App() {
 
   return (

@@ -3,12 +3,14 @@ import { Link } from "react-router-dom"
 import Navbar from "../components/navbar"
 import Footer from "../components/footer"
 import React from 'react'
+import BackButton from "../components/back_button"
 
 const Plir_goneis = () =>  {
 
   return (
       <div>
         <Navbar />
+        <BackButton />
         <div className="font-khula flex flex-col text-center justify-center px-10 pt-[30px] text-2xl leading-none" >
           <p className="font-bold">ΠΛΗΡΟΦΟΡΙΕΣ ΓΟΝΕΑ</p>
                 <p className=" flex-grow pt-[30px]">
