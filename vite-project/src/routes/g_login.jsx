@@ -1,25 +1,33 @@
 import React, { useState } from 'react';
-import Navbar from '../components/navbar';
-import Footer from '../components/footer';
+import { useNavigate } from 'react-router-dom'
+import Navbar from '../components/navbar'
+import Footer from '../components/footer'
 import BackButton from "../components/back_button"
 
 const G_login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
+  const navigate = useNavigate();
 
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate('/g_arxiki');
+  };
+
   return (
-    <div className="flex flex-col">
-      <Navbar />
+    <div className="flex flex-col min-h-screen">
       <BackButton />
+      <Navbar />
       <div className="flex-1 flex items-center justify-center py-11">
         <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold text-center text-gray-800">
             {isSignUp ? 'Εγγραφή Γονέα' : 'Σύνδεση Γονέα'}
           </h2>
-          <form className="mt-8 space-y-6">
+          {/* <form className="mt-8 space-y-6"> */}
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
