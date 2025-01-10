@@ -13,6 +13,7 @@ import E_Reviews from "./routes/e_reviews"
 import E_Requests from "./routes/e_requests"
 import E_edit_bio from "./routes/e_edit_bio"
 import E_istoriko_aggeliwn from "./routes/e_istoriko_aggeliwn"
+import E_rantevou from "./routes/e_rantevou"
 
 
 
@@ -42,6 +43,7 @@ function App() {
         <Route path="/e_requests" element={<E_Requests />}/>
         <Route path="/e_edit_bio" element={<E_edit_bio />}/>
         <Route path="/e_istoriko_aggeliwn" element={<E_istoriko_aggeliwn />}/>
+        <Route path="/e_rantevou" element={<E_rantevou />}/>
 
       </Routes>
     </div>
