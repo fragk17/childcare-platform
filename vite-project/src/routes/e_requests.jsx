@@ -147,7 +147,7 @@ const Requests = () => {
     <div className="flex flex-col min-h-screen">
       <BackButton />
       <Navbar_in />
-      <div className="bg-gray-100 min-h-screen p-6 py-20">
+      <div className="min-h-screen p-6 py-20">
         <div className="bg-white shadow rounded-md">
           {/* Tab Selector */}
           <div className="flex border-b border-gray-300">
@@ -400,7 +400,7 @@ const Requests = () => {
               </span>
             </div>
             <p className="text-gray-800">
-              Πρέπει να αποδεχθείτε τους όρους αν θέλετε να συνεχίσετε.
+              Πρέπει να αποδεχθείτε τους όρους αν θέλετε να συνεχίσετε!
             </p>
             <div className="mt-6 flex justify-center">
               <button
@@ -433,7 +433,7 @@ const Requests = () => {
             sx={{ fontSize: 60, color: 'grey', mb: 2 }}
           />
           <Typography variant="h4" style={{ fontWeight: 'bold' }} gutterBottom>
-            Αποδεχθεήκατε επιτυχώς την αίτηση!
+            Αποδεχθήκατε επιτυχώς την αίτηση!
           </Typography>
           <button
             className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
@@ -463,7 +463,7 @@ const Requests = () => {
             sx={{ fontSize: 60, color: 'grey', mb: 2 }}
           />
           <Typography variant="h4" style={{ fontWeight: 'bold' }} gutterBottom>
-            Αποδεχθεήκατε επιτυχώς την αίτηση!
+            Η αίτηση απορρίφθηκε επιτυχώς!
           </Typography>
           <button
             className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
