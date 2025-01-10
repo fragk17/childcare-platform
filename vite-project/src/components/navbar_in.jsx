@@ -37,7 +37,7 @@ const Navbar_in = () => {
                         </button>
                         {isDropdownOpen && (
                             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
-                                <Link to="/profile" className="block px-4 py-2 text-sm hover:bg-gray-100">Προφίλ</Link>
+                                <Link to="/profil" className="block px-4 py-2 text-sm hover:bg-gray-100">Προφίλ</Link>
                                 <Link to="/" className="block px-4 py-2 text-sm hover:bg-gray-100">Αποσύνδεση</Link>
                             </div>
                         )}

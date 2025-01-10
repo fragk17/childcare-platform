@@ -14,6 +14,7 @@ import E_Requests from "./routes/e_requests"
 import E_edit_bio from "./routes/e_edit_bio"
 import E_istoriko_aggeliwn from "./routes/e_istoriko_aggeliwn"
 import E_rantevou from "./routes/e_rantevou"
+import Profil from "./routes/profil"
 
 
 
@@ -28,6 +29,8 @@ function App() {
         <Route path="/home" element={<Home />}/>
         <Route path="/plir_gon" element={<Plir_goneis />}/>
         <Route path="/plir_epagg" element={<Plir_epagg />}/>
+
+        
 
 
         <Route path="/g_login" element={<G_login />}/>
@@ -44,6 +47,8 @@ function App() {
         <Route path="/e_edit_bio" element={<E_edit_bio />}/>
         <Route path="/e_istoriko_aggeliwn" element={<E_istoriko_aggeliwn />}/>
         <Route path="/e_rantevou" element={<E_rantevou />}/>
+
+        <Route path="/profil" element={<Profil />} />
 
       </Routes>
     </div>
