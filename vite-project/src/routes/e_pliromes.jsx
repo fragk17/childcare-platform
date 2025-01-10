@@ -1,32 +1,9 @@
-// import React from 'react'
-// import Navbar_in from '../components/navbar_in';
-// import Footer from '../components/footer';
-
-// const E_pliromes = () => {
-//   return (
-//     <div className="min-h-screen flex flex-col">
-//       <Navbar_in />
-
-
-//       <Footer />
-//     </div>
-//   )
-// }
-
-// export default E_pliromes
-
-
-
-
-
-
 import React, { useState } from "react";
 import Navbar_in from "../components/navbar_in";
 import Footer from "../components/footer";
-import { Modal, Box, Typography, Button ,Stack } from "@mui/material";
 import BackButton from "../components/back_button";
+import { Modal, Box, Typography, Button ,Stack } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-// import { createTheme, ThemeProvider } from '@mui/material/styles';
 import qr from "../assets/qr.jpg"
 
 const E_pliromes = () => {

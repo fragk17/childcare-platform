@@ -38,7 +38,7 @@ const theme = createTheme({
   },
 });
 
-const Dimiourgia_aggelias = () => {
+const E_Dimiourgia_aggelias = () => {
   const [availability, setAvailability] = useState('Ναι');
   const [employment, setEmployment] = useState('Πλήρης');
   const [location, setLocation] = useState('');
@@ -314,6 +314,6 @@ const Dimiourgia_aggelias = () => {
   );
 };
 
-export default Dimiourgia_aggelias;
+export default E_Dimiourgia_aggelias;
 
 

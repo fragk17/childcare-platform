@@ -1,22 +1,3 @@
-// import React from 'react'
-// import Navbar_in from '../components/navbar_in';
-// import Footer from '../components/footer';
-// const G_pliromes = () => {
-//   return (
-//     <div className="min-h-screen flex flex-col">
-//         <Navbar_in />
-
-
-//         <Footer />
-//     </div>
-//   )
-// }
-
-// export default G_pliromes
-
-
-
-
 import React, { useState } from "react";
 import Navbar_in from "../components/navbar_in";
 import Footer from "../components/footer";
