@@ -10,7 +10,7 @@ const G_arxiki = () => {
       
       <main className="flex-grow container mx-auto py-20">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-          <Link to="/search" className="p-10 text-xl bg-gray-300 text-center rounded-lg hover:bg-slate-600 hover:text-neutral-50 font-bold">Αναζήτηση Επαγγελματιών</Link>
+          <Link to="/g_anazitisi_epaggelmatiwn" className="p-10 text-xl bg-gray-300 text-center rounded-lg hover:bg-slate-600 hover:text-neutral-50 font-bold">Αναζήτηση Επαγγελματιών</Link>
           <Link to="/g_aitisi_endiaferontos" className="p-10 text-xl bg-gray-300 text-center rounded-lg hover:bg-slate-600 hover:text-neutral-50 font-bold">Αίτηση Ενδιαφέροντος</Link>
           <Link to="/g_istoriko_rantevou" className="p-10 text-xl bg-gray-300 text-center rounded-lg hover:bg-slate-600 hover:text-neutral-50 font-bold">Ιστορικό Ραντεβού</Link>
           <Link to="/g_pliromes" className="p-10 text-xl bg-gray-300 text-center rounded-lg hover:bg-slate-600 hover:text-neutral-50 font-bold">Πληρωμές</Link>
