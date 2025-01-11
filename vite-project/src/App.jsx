@@ -15,7 +15,9 @@ import E_edit_bio from "./routes/e_edit_bio"
 import E_istoriko_aggeliwn from "./routes/e_istoriko_aggeliwn"
 import E_rantevou from "./routes/e_rantevou"
 import Profil from "./routes/profil"
-
+import G_aitisi_endiaferontos from "./routes/g_aitisi_endiaferontos"
+import G_istoriko_aitisewn from "./routes/g_istoriko_aitisewn"
+import G_istoriko_rantevou from "./routes/g_istoriko_rantevou"
 
 
 // https://www.figma.com/design/n77y1eExg5FYmlzcq20kI4/EAM?node-id=148-3317&t=lTpNKkdTKZ1vMwee-0
@@ -28,14 +30,15 @@ function App() {
         <Route path="/" element={<Home />}/>
         <Route path="/home" element={<Home />}/>
         <Route path="/plir_gon" element={<Plir_goneis />}/>
-        <Route path="/plir_epagg" element={<Plir_epagg />}/>
-
-        
+        <Route path="/plir_epagg" element={<Plir_epagg />}/>        
 
 
         <Route path="/g_login" element={<G_login />}/>
         <Route path="/g_arxiki" element={<G_arxiki />}/>
         <Route path="/g_pliromes" element={<G_pliromes />}/>
+        <Route path="/g_aitisi_endiaferontos" element={<G_aitisi_endiaferontos />}/>
+        <Route path="/g_istoriko_aitisewn" element={<G_istoriko_aitisewn />}/>
+        <Route path="/g_istoriko_rantevou" element={<G_istoriko_rantevou />}/>
 
 
         <Route path="/e_login" element={<E_login />}/>

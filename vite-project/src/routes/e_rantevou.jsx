@@ -216,7 +216,7 @@ const handleFinalSubmitPopup = () => {
             <p className="text-gray-600">
               <strong>Διεύθυνση:</strong> {selectedAppointment?.address}
             </p>
-            {modalType === "accept" ? (
+            {activeTab === "active" && modalType === "accept" ? (
               <div className="mt-6 flex justify-between">
                 <button
                   className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
@@ -231,7 +231,7 @@ const handleFinalSubmitPopup = () => {
                   Αποδοχή Αίτησης
                 </button>
               </div>
-            ) : (
+            ) : activeTab === "active" ? (
               <div className="mt-6 flex justify-between">
                 <button
                   className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
@@ -252,10 +252,21 @@ const handleFinalSubmitPopup = () => {
                   Κλείσιμο
                 </button>
               </div>
+            ) : (
+              // For "Ιστορικό Ραντεβού" tab, only show the "Κλείσιμο" button
+              <div className="mt-6 flex justify-center">
+                <button
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                  onClick={closeModal}
+                >
+                  Κλείσιμο
+                </button>
+              </div>
             )}
           </div>
         </div>
       )}
+
 
       {/* Accept Confirmation Modal */}
       {isAcceptModalOpen && (

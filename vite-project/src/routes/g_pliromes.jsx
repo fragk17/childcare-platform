@@ -47,7 +47,7 @@ const G_pliromes = () => {
         <BackButton />
         <Navbar_in />
 
-      <main className="flex-grow bg-gray-100 p-4">
+      <main className="flex-grow p-4">
         <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
           <h1 className="text-xl font-bold text-center mb-4">Πληρωμές</h1>
 
