@@ -15,6 +15,7 @@ import E_edit_bio from "./routes/e_edit_bio"
 import E_istoriko_aggeliwn from "./routes/e_istoriko_aggeliwn"
 import E_rantevou from "./routes/e_rantevou"
 import Profil from "./routes/profil"
+import Profil_Epej from "./routes/profil_epej"
 import G_aitisi_endiaferontos from "./routes/g_aitisi_endiaferontos"
 import G_istoriko_aitisewn from "./routes/g_istoriko_aitisewn"
 import G_istoriko_rantevou from "./routes/g_istoriko_rantevou"
@@ -56,6 +57,8 @@ function App() {
         <Route path="/e_rantevou" element={<E_rantevou />}/>
 
         <Route path="/profil" element={<Profil />} />
+        <Route path="/profil_epej" element={<Profil_Epej />} />
+        
 
       </Routes>
     </div>

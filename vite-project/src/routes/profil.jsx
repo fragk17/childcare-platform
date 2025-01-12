@@ -3,9 +3,13 @@ import Navbar_in from "../components/navbar_in";
 import Footer from "../components/footer";
 import BackButton from "../components/back_button";
 import image from "../assets/ima.jpg";
+import { Link, useLocation } from "react-router-dom";
 
 const Profil = () => {
+  const location = useLocation();
   const [profileImage, setProfileImage] = useState(image);
+  
+  const [aboutMe, setAboutMe] = useState(location.state?.aboutMe || "Τα πάω πολύ καλά με τα παιδιά και είμαι ευγενικός!");
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -24,13 +28,15 @@ const Profil = () => {
     email: "mariapap@gmail.com",
   });
 
+  
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <BackButton />
       <Navbar_in />
       <div className="flex-grow p-8">
         <h1 className="text-2xl font-bold text-center mb-6">ΠΡΟΦΙΛ</h1>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left Side */}
           <div className="flex flex-col items-start pl-8">
@@ -97,7 +103,7 @@ const Profil = () => {
           </div>
 
           {/* Right Side */}
-          <div className="flex flex-col items-start pr-8 mt-12" >
+          <div className="flex flex-col items-start pr-8 mt-12">
             {/* AMKA */}
             <div className="w-full mb-4">
               <label className="block text-gray-700 font-bold mb-2" htmlFor="amka">
@@ -166,30 +172,36 @@ const Profil = () => {
         </div>
 
         {/* Bottom Section */}
-<div className="w-full flex flex-col items-center mt-8">
-  <div className="text-center">
-    <label
-      className="block text-gray-700 font-bold mb-4"
-      htmlFor="aboutMe"
-    >
-      Γράψε μερικά λόγια σχετικά με εσένα (τα οποία θα μπορούν να δουν οι γονείς που ενδιαφέρονται)
-    </label>
-    <textarea
-      id="aboutMe"
-      readOnly
-      placeholder="Εισαγωγή κειμένου"
-      value = "Τα πάω πολύ καλά με τα παιδιά και είμαι ευγενικός!"
-      className="shadow appearance-none border rounded py-2 px-3 text-gray-700 bg-gray-100 cursor-not-allowed"
-      style={{ width: '400px', height: '100px', resize: 'none' }} // Standard size
-    ></textarea>
-  </div>
-  <div className="mt-4">
-    <button className="bg-gray-600 text-white font-bold py-2 px-4 rounded">
-      Επεξεργασία
-    </button>
-  </div>
-</div>
-
+        <div className="flex flex-col items-center mt-8">
+          <div className="text-center w-full">
+            <label
+              className="block text-gray-700 font-bold mb-4"
+              htmlFor="aboutMe"
+            >
+              Γράψε μερικά λόγια σχετικά με εσένα (τα οποία θα μπορούν να δουν οι γονείς που ενδιαφέρονται)
+            </label>
+            <textarea
+              id="aboutMe"
+              readOnly
+              placeholder="Εισαγωγή κειμένου"
+              value={aboutMe}
+              className="shadow appearance-none border rounded py-2 px-3 text-gray-700 bg-gray-100 cursor-not-allowed"
+              style={{
+                width: "400px",
+                height: "100px",
+                resize: "none",
+                margin: "0 auto",
+              }}
+            ></textarea>
+          </div>
+          <div className="mt-4">
+            <Link to="/profil_epej" state={{ aboutMe }}>
+              <button className="bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                Επεξεργασία
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
       <Footer />
     </div>
@@ -197,4 +209,3 @@ const Profil = () => {
 };
 
 export default Profil;
-
