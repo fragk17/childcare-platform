@@ -42,6 +42,9 @@ const Profil_Epej = () => {
     
   };
 
+  const handleSave = () => {
+    navigate("/profil", { state: { aboutMe } });
+  };
 
   const closeModalAndRedirect = () => {
     navigate("/profil", { state: formData });
