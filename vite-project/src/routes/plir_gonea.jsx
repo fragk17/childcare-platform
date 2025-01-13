@@ -1,27 +1,117 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import Navbar from "../components/navbar"
-import Footer from "../components/footer"
-import React from 'react'
-import BackButton from "../components/back_button"
+import React from "react";
+import Navbar from "../components/navbar"; // Assuming you have a navbar component
+import Footer from "../components/footer"; // Assuming you have a footer component
+import BackButton from "../components/back_button"; // Assuming you have a back button component
 
-const Plir_goneis = () =>  {
-
+const Plir_goneis = () => {
   return (
-      <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <Navbar />
+      <div className="flex-grow p-8">
         <BackButton />
-        <Navbar />
-        <div className="px-10 py-10"> 
-        <div className="font-khula flex flex-col text-center justify-center px-10 pt-[80px] text-2xl leading-none" >
-          <p className="font-bold">ΠΛΗΡΟΦΟΡΙΕΣ ΓΟΝΕΑ</p>
-                <p className=" flex-grow pt-[30px]">
-                  Πρόσβαση έχουν οι γονείς και τα πρόσωπα που έχουν την επιμέλεια βρεφών και νηπίων, καθώς και τα φυσικά πρόσωπα που επιθυμούν να εγγραφούν στο Μητρώο Επιμελητών. Δικαίωμα αίτησης χρηματοδότησης από τη Δράση «Νταντάδες της Γειτονιάς» για κάλυψη μέρους της αμοιβής της υπηρεσίας του/της Επιμελητή/τριας, έχουν τα ωφελούμενα πρόσωπα που πληρούν τις προϋποθέσεις.
-                </p>
-        </div>
-        </div>
-        <Footer />
-      </div>
-  )
-}
+        <h1 className="text-2xl font-bold mb-6">ΠΛΗΡΟΦΟΡΙΕΣ ΓΟΝΕΑ</h1>
 
-export default Plir_goneis
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Κριτήρια Επιλεξιμότητας:</h2>
+          <ol className="list-decimal pl-6">
+            <li>
+              Πρέπει είστε είτε:
+              <ul className="list-disc pl-8 mt-2">
+                <li>
+                  Μητέρα (φυσική, θετή ή ανάδοχη) η οποία είτε εργάζεται στον
+                  δημόσιο ή ιδιωτικό τομέα, είτε είναι εγγεγραμμένη στα
+                  μητρώα της Δ.ΥΠ.Α. ως άνεργη.
+                </li>
+                <li>
+                  Πατέρας (φυσικός θετικός ή ανάδοχος) με αποκλειστική γονική
+                  μέριμνα ο οποίος εργάζεται στον δημόσιο ή στον ιδιωτικό
+                  τομέα.
+                </li>
+                <li>
+                  Πρόσωπο, στο οποίο έχει ανατεθεί, με δικαστική απόφαση ή
+                  εισαγγελική διάταξη, η αποκλειστική επιμέλεια βρέφους ή
+                  νηπίου, το οποίο εργάζεται στον δημόσιο ή στον ιδιωτικό
+                  τομέα.
+                </li>
+              </ul>
+            </li>
+            <li>Πρέπει το ετήσιο εισόδημά σας να μην υπερβαίνει το ποσό των 24.000€.</li>
+            <li>
+              Πρέπει μην τελείτε υπό καθεστώς άδειας μητρότητας ή άδειας
+              πατρότητας ή άδειας ανατροφής τέκνου ή γονικής άδειας ή ειδικής
+              παροχής προστασίας μητρότητας του{" "}
+              <span className="text-blue-800">
+                άρθρου 36 του ν. 4808/2021 (ΦΕΚ/Α/101)
+              </span>
+              .
+            </li>
+            <li>Πρέπει να έχετε μικρότερο τέκνο δύο (2) μηνών έως δύο (2) ετών και έξι (6) μηνών.</li>
+            <li>Πρέπει η διεύθυνση διαμονής σας να είναι εντός των{" "}
+              <span className="text-blue-800">δήμων δράσης</span>.
+            </li>
+          </ol>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Διαδικασία Εγγραφής στη Πλατφόρμα:</h2>
+          <h3 className="text-lg font-semibold mb-2">Βήματα Εγγραφής</h3>
+          <ol className="list-decimal pl-6">
+            <li>
+              Κάνετε σύνδεση με τους κωδικούς{" "}
+              <span className="text-blue-800">taxisnet</span>.
+            </li>
+            <li>
+              Συμπληρώνετε την αίτηση για την παροχή υπηρεσίας φύλαξης. Για την
+              αίτηση θα χρειαστείτε πέρα από τα προσωπικά σας στοιχεία,
+              απαραίτητα πιστοποιητικά που να επιβεβαιώνουν ότι ανήκετε σε μια
+              από τις παραπάνω ομάδες. Εντός ολίγων ημερών θα σας αποσταλεί
+              μήνυμα ηλεκτρονικού ταχυδρομείου που θα σας ενημερώνει για την
+              αποδοχή της αίτησης ή τον λόγο της απόρριψης.
+            </li>
+          </ol>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Λειτουργία Πλατφόρμας:</h2>
+          <p className="mb-4">
+            Αφού κάνετε click στην ενότητα "ΓΟΝΕΑΣ" θα βρεθείτε σε ένα μενού με
+            τις ακόλουθες επιλογές:
+          </p>
+          <ul className="list-disc pl-6">
+            <li>
+              Αναζήτηση Επαγγελματιών (όπου μπορείτε να βρείτε τον
+              επαγγελματία που σας ταιριάζει καλύτερα με βάση τα φίλτρα που
+              εσείς επιλέγετε και να αιτηθείτε ραντεβού).
+            </li>
+            <li>
+              Ενεργές Συνεργασίες (όπου μπορείτε να βρείτε χρήσιμες
+              πληροφορίες για τους επαγγελματίες με τους οποίους συνεργάζεστε
+              αυτή τη χρονική περίοδο).
+            </li>
+            <li>
+              Προγραμματισμένα Ραντεβού (όπου μπορείτε να βρείτε τα ραντεβού
+              που έχετε προγραμματίσει).
+            </li>
+            <li>
+              Αιτήσεις Ενδιαφέροντος (όπου μπορείτε να βρείτε όλες τις αιτήσεις
+              ενδιαφέροντος που έχετε στείλει καθώς και να υποβάλετε καινούρια
+              προς κάποιον επαγγελματία).
+            </li>
+            <li>
+              Ιστορικό δηλώσεων αιτημάτων/πληρωμάτων (όπου μπορείτε να βρείτε
+              όλες τις αιτημένες αιτήσεις σας και τα αιτήματα πληρωμής σας).
+            </li>
+            <li>
+              Πληρωμές Επαγγελματιών (όπου μπορείτε να βρείτε τον αριθμό
+              voucher, να τα προωθήσετε στον αντίστοιχο επαγγελματία και να
+              ενημερώνεστε για το αν το έλαβε).
+            </li>
+          </ul>
+        </section>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+export default Plir_goneis;
