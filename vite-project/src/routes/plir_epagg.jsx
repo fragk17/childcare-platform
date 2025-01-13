@@ -1,26 +1,81 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import Navbar from "../components/navbar"
-import Footer from "../components/footer"
-import BackButton from "../components/back_button"
+import React from "react";
+import Navbar from "../components/navbar"; // Assuming you have a navbar component
+import Footer from "../components/footer"; // Assuming you have a footer component
+import BackButton from "../components/back_button"; // Assuming you have a back button component
 
-import React from 'react'
-
-const Plir_epagg = () =>  {
-
+const InformationPage = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <Navbar />
+      <div className="flex-grow p-8">
         <BackButton />
-        <Navbar />
-        <div className="font-khula flex flex-col text-center justify-center px-10 pt-[80px] text-2xl leading-none" >
-            <p className="font-bold">ΠΛΗΡΟΦΟΡΙΕΣ ΕΠΑΓΓΕΛΜΑΤΙΑ</p>
-            <p className=" flex-grow pt-[30px]">
-              Πρόσβαση έχουν οι γονείς και τα πρόσωπα που έχουν την επιμέλεια βρεφών και νηπίων, καθώς και τα φυσικά πρόσωπα που επιθυμούν να εγγραφούν στο Μητρώο Επιμελητών. Δικαίωμα αίτησης χρηματοδότησης από τη Δράση «Νταντάδες της Γειτονιάς» για κάλυψη μέρους της αμοιβής της υπηρεσίας του/της Επιμελητή/τριας, έχουν τα ωφελούμενα πρόσωπα που πληρούν τις προϋποθέσεις.
+        <h1 className="text-2xl font-bold mb-6">ΠΛΗΡΟΦΟΡΙΕΣ ΕΠΑΓΓΕΛΜΑΤΙΑ</h1>
+        
+          <section className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Κριτήρια Επιλεξιμότητας:</h2>
+            <ol className="list-decimal pl-6">
+              <li>Πρέπει να είστε 18 και άνω.</li>
+              <li>Πρέπει να είστε Έλληνες ή αλλοδαποί με νόμιμη διαμονή στην Ελλάδα και πρόσβαση στην αγορά εργασίας.</li>
+              <li>Πρέπει να πληροίτε  τις ακόλουθες <span className="text-blue-800">προϋποθέσεις.</span></li>
+              <li>Πρέπει να είστε διαθέσιμοι να εργαστείτε εντός <span className="text-blue-800">των δήμων δράσης.</span>.</li>
+            </ol>
+          </section>
+          <section className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Διαδικασία Εγγραφής στη Πλατφόρμα:</h2>
+            <h3 className="text-lg font-semibold mb-2">Απαραίτητα Πιστοποιητικά:</h3>
+            <p className="mb-4">
+              Για Έλληνες Πολίτες:
             </p>
-        </div>
-        <Footer />
+            <ul className="list-disc pl-6">
+              <li>Τίτλο σπουδών.</li>
+              <li>Πιστοποιητικό πρώτων βοηθειών.</li>
+              <li>Πιστοποιητικά υγείας τελευταίου τριμήνου από παθολόγο, δερματολόγο και ψυχίατρο δημόσιας δομής.</li>
+              <li>Αντίγραφο ποινικού μητρώου γενικής χρήσης.</li>
+            </ul>
+            <p className="mt-4 mb-4">
+              Σε περίπτωση που δεν είστε Έλληνας πολίτης θα χρειαστείτε επιπλέον:
+            </p>
+            <ul className="list-disc pl-6">
+              <li>Δελτίο Ταυτότητας Ε.Ε. ή διαβατήριο σε ισχύ</li>
+              <li>Για την πιστοποίηση του επιπέδου γνώσης της ελληνικής γλώσσας, εφόσον δεν είστε απόφοιτος/η δευτεροβάθμιας, 
+                μεταδευτεροβάθμιας, ή τριτοβάθμιας εκπαίδευσης στην Ελλάδα,
+                 απαιτείται αναγνωρισμένο πιστοποιητικό ελληνομάθειας, επιπέδου Β1.</li>
+              <li>Βεβαίωση εγγραφής ή βεβαίωση μόνιμης διαμονής (ΠΔ 106/2007), ή</li>
+              <li>Άδεια διαμονής ή βεβαίωση για την αίτηση χορήγησης άδειας διαμονής που παρέχει δικαίωμα για εργασία, ή</li>
+              <li>Ειδικό Δελτίο Ταυτότητας Ομογενούς (ΕΔΤΟ).</li>
+              <li>Άδεια διαμονής ενιαίου τύπου.</li>
+            </ul>
+          </section>
+          <section className="mb-8">
+            <h3 className="text-lg font-semibold mb-2">Βήματα Εγγραφής</h3>
+            <ol className="list-decimal pl-6">
+              <li>Σε περίπτωση που δεν έχετε τους απαιτούμενους τίτλους σπουδών πρέπει να παρακολουθήσετε το <span className="text-blue-800">ασύγχρονο πρόγραμμα εκπαίδευσης.</span></li>
+              <li>Κάνετε σύνδεση με τους κωδικούς taxisnet.</li>
+              <li>Συμπληρώνετε την αίτηση εγγραφής στο Μητρώο. Εντός 10 εργάσιμων ημερών θα σας αποσταλεί μήνυμα ηλεκτρονικού ταχυδρομείου. Σε περίπτωση αποδοχής θα παρέχεται στο μήνυμα ο μοναδικός αριθμό Μητρώου σας ,
+                ενώ σε περίπτωση απόρριψης θα σας παρέχονται πληροφορίες σχετικά με τον λόγο της απόρριψης.</li>
+            </ol>
+          </section>
+          <section className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Λειτουργία Πλατφόρμας:</h2>
+            <p className="mb-4">
+              Αφού κάνετε click στην ενότητα "ΕΠΑΓΓΕΛΜΑΤΙΑΣ" θα βρεθείτε σε ένα μενού με τις ακόλουθες επιλογές:
+            </p>
+            <ul className="list-disc pl-6">
+              <li>Δημιουργία αγγελίας (όπου συμπληρώνετε τον τόπο, τις ώρες και το είδος της εργασίας, πλήρης ή μερική, που προτιμάτε).</li>
+              <li>Προβολή διαφημίσεων θέσεων συγκεκριμένου τομέα εργασίας.</li>
+              <li>Επεξεργασία Βιογραφικόυ (όπου συμπληρώνετε τα προσωπικά σας στοιχεία).</li>
+              <li>Ραντεβού (όπου μπορείτε να βρείτε τα ραντεβού που σας έχουν αιτηθεί και να τα αποδεικτείτε ή να τα απορρίψετε).</li>
+              <li>Ιστορικό Αγγελιών (όπου μπορείτε να βρείτε όλες τις αγγελίες που έχετε στείλει).</li>
+              <li> Ιστορικό αιτήσεων συμφωνητικών/πληρωμών (όπου μπορείτε να βρείτε όλες τις συνεργασίες σας και τα συμφωνητικά σας).</li>
+              <li>Προβολή Αξιολογήσεων (όπου μπορείτε να δείτε τις αξιολογήσεις που σας έχουν γίνει από γονείς που έχετε συνεργαστεί).</li>
+              <li>Πληρωμές (όπου μπορείτε να βρείτε τα διαθέσιμα voucher σας και να τα εξαργυρώσετε).</li>
+            </ul>
+          </section>
+      </div>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Plir_epagg
+export default InformationPage;
+

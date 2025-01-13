@@ -4,9 +4,11 @@ import Footer from "../components/footer";
 import BackButton from "../components/back_button";
 import image from "../assets/ima.jpg";
 import { Link, useLocation } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 const Profil = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(image);
   
   const [aboutMe, setAboutMe] = useState(location.state?.aboutMe || "Τα πάω πολύ καλά με τα παιδιά και είμαι ευγενικός!");
@@ -19,6 +21,10 @@ const Profil = () => {
     phone: "+30 6977979200",
     email: "mariapap@gmail.com",
   });
+
+  const handleEditProfile = () => {
+    navigate("/profil_epej", { state: { aboutMe } });
+  };
 
   
 
@@ -179,12 +185,10 @@ const Profil = () => {
               }}
             ></textarea>
           </div>
-          <div className="mt-4">
-            <Link to="/profil_epej" state={{ aboutMe }}>
-              <button className="bg-gray-600 text-white font-bold py-2 px-4 rounded">
-                Επεξεργασία
-              </button>
-            </Link>
+          <div className="mt-4">       
+            <button onClick={handleEditProfile} className="bg-gray-600 text-white font-bold py-2 px-4 rounded">
+              Επεξεργασία
+            </button>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Navbar_in from "../components/navbar_in";
 import Footer from "../components/footer";
 import BackButton from "../components/back_button";
@@ -11,8 +11,9 @@ import Typography from "@mui/material/Typography";
 
 const Profil_Epej = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [profileImage, setProfileImage] = useState(image);
-  const [formData, setFormData] = useState({
+  const [formData] = useState({
     dateOfBirth: "03/04/2004",
     address: "Περικλέους 13, Περιστέρι",
     amka: "03040401269",
@@ -23,27 +24,36 @@ const Profil_Epej = () => {
   });
 
   const [aboutMe, setAboutMe] = useState("");
+  const [originalAboutMe, setOriginalAboutMe] = useState(""); // Track original value
   const [showModal, setShowModal] = useState(false); // Existing modal
-  const [successModalOpen, setSuccessModalOpen] = useState(false); // New modal state
+  const [successModalOpen, setSuccessModalOpen] = useState(false); // New modal state for save
+  const [rejectModalOpen, setRejectModalOpen] = useState(false); // New modal state for cancel
 
   useEffect(() => {
-    const savedAboutMe = localStorage.getItem("aboutMe");
-    if (savedAboutMe) {
-      setAboutMe(savedAboutMe);
-    }
-  }, []);
+    const savedAboutMe = localStorage.getItem("aboutMe") || formData.aboutMe;
+    setAboutMe(savedAboutMe);
+    setOriginalAboutMe(savedAboutMe); // Save the original value
+  }, [formData.aboutMe]);
 
+  // Save Button Handlers
   const handleSaveClick = () => {
-    // Save data locally
     localStorage.setItem("aboutMe", aboutMe);
-
-    // Show the success modal
     setSuccessModalOpen(true);
   };
 
   const handleCloseSuccessModal = () => {
     setSuccessModalOpen(false);
     navigate("/profil", { state: { aboutMe } });
+  };
+
+  // Cancel Button Handlers
+  const handleCancelClick = () => {
+    setRejectModalOpen(true);
+  };
+
+  const handleCloseRejectModal = () => {
+    setRejectModalOpen(false);
+    navigate("/profil", { state: { aboutMe: originalAboutMe } });
   };
 
   return (
@@ -172,8 +182,8 @@ const Profil_Epej = () => {
         {/* Buttons */}
         <div className="mt-6 flex justify-center space-x-4">
           <button
-            className="bg-gray-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() => navigate("/profil")}
+            className="bg-red-600 text-white font-bold py-2 px-4 rounded"
+            onClick={handleCancelClick}
           >
             Ακύρωση
           </button>
@@ -209,6 +219,35 @@ const Profil_Epej = () => {
           <button
             className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
             onClick={handleCloseSuccessModal}
+          >
+            Κλείσιμο
+          </button>
+        </Box>
+      </Modal>
+
+      {/* Reject Modal */}
+      <Modal open={rejectModalOpen} onClose={() => setRejectModalOpen(false)}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+            textAlign: "center",
+          }}
+        >
+          <CheckCircleIcon sx={{ fontSize: 60, color: "red", mb: 2 }} />
+          <Typography variant="h4" sx={{ fontWeight: "bold" }} gutterBottom>
+            Οι αλλαγές απορρίφθηκαν!
+          </Typography>
+          <button
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+            onClick={handleCloseRejectModal}
           >
             Κλείσιμο
           </button>
