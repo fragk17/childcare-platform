@@ -11,14 +11,6 @@ const Profil = () => {
   
   const [aboutMe, setAboutMe] = useState(location.state?.aboutMe || "Τα πάω πολύ καλά με τα παιδιά και είμαι ευγενικός!");
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
-    }
-  };
-
   const [formData] = useState({
     dateOfBirth: "03/04/2004",
     address: "Περικλέους 13, Περιστέρι",
@@ -42,13 +34,6 @@ const Profil = () => {
           <div className="flex flex-col items-start pl-8">
             {/* Profile Picture */}
             <div className="relative w-32 h-32 border-2 border-black rounded-full flex items-center justify-center bg-gray-100 mb-4">
-              <label className="absolute inset-0 cursor-pointer flex items-center justify-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleImageChange}
-                />
                 {profileImage ? (
                   <img
                     src={profileImage}
@@ -56,9 +41,9 @@ const Profil = () => {
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
-                  <span className="text-gray-500">Upload Image</span>
+                  <span className="text-gray-500">No Image</span>
                 )}
-              </label>
+
             </div>
 
             {/* Name */}

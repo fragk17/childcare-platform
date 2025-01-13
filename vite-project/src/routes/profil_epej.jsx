@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar_in from "../components/navbar_in";
 import Footer from "../components/footer";
 import BackButton from "../components/back_button";
 import image from "../assets/ima.jpg";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import Typography from "@mui/material/Typography";
 
 const Profil_Epej = () => {
   const navigate = useNavigate();
@@ -17,42 +21,33 @@ const Profil_Epej = () => {
     email: "mariapap@gmail.com",
     aboutMe: "Τα πάω πολύ καλά με τα παιδιά και είμαι ευγενικός!",
   });
-  const [showModal, setShowModal] = useState(false);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  const [aboutMe, setAboutMe] = useState("");
+  const [showModal, setShowModal] = useState(false); // Existing modal
+  const [successModalOpen, setSuccessModalOpen] = useState(false); // New modal state
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
+  useEffect(() => {
+    const savedAboutMe = localStorage.getItem("aboutMe");
+    if (savedAboutMe) {
+      setAboutMe(savedAboutMe);
     }
-  };
-
-  const [aboutMe, setAboutMe] = useState(location.state?.aboutMe || "");
+  }, []);
 
   const handleSaveClick = () => {
-    setShowModal(true);
-    
+    // Save data locally
+    localStorage.setItem("aboutMe", aboutMe);
+
+    // Show the success modal
+    setSuccessModalOpen(true);
   };
 
-  const handleSave = () => {
+  const handleCloseSuccessModal = () => {
+    setSuccessModalOpen(false);
     navigate("/profil", { state: { aboutMe } });
-  };
-
-  const closeModalAndRedirect = () => {
-    navigate("/profil", { state: formData });
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      <BackButton />
       <Navbar_in />
       <div className="flex-grow p-8">
         <h1 className="text-2xl font-bold text-center mb-6">EΠΕΞΕΡΓΑΣΙΑ ΠΡΟΦΙΛ</h1>
@@ -62,23 +57,11 @@ const Profil_Epej = () => {
           <div className="flex flex-col items-start pl-8">
             {/* Profile Picture */}
             <div className="relative w-32 h-32 border-2 border-black rounded-full flex items-center justify-center bg-gray-100 mb-4">
-              <label className="absolute inset-0 cursor-pointer flex items-center justify-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleImageChange}
-                />
-                {profileImage ? (
-                  <img
-                    src={profileImage}
-                    alt="Profile"
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                ) : (
-                  <span className="text-gray-500">Upload Image</span>
-                )}
-              </label>
+              <img
+                src={profileImage}
+                alt="Profile"
+                className="w-full h-full rounded-full object-cover"
+              />
             </div>
 
             {/* Name */}
@@ -89,10 +72,7 @@ const Profil_Epej = () => {
 
             {/* Date of Birth */}
             <div className="w-full mb-4">
-              <label
-                className="block text-gray-700 font-bold mb-2"
-                htmlFor="dateOfBirth"
-              >
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="dateOfBirth">
                 Ημερομηνία Γέννησης
               </label>
               <input
@@ -106,10 +86,7 @@ const Profil_Epej = () => {
 
             {/* Address */}
             <div className="w-full mb-6">
-              <label
-                className="block text-gray-700 font-bold mb-2"
-                htmlFor="address"
-              >
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="address">
                 Διεύθυνση Κατοικίας
               </label>
               <input
@@ -124,7 +101,7 @@ const Profil_Epej = () => {
 
           {/* Right Side */}
           <div className="flex flex-col items-start pr-8 mt-12">
-            {/* AMKA */}
+            {/* Other Fields */}
             <div className="w-full mb-4">
               <label className="block text-gray-700 font-bold mb-2" htmlFor="amka">
                 ΑΜΚΑ
@@ -137,13 +114,8 @@ const Profil_Epej = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100 cursor-not-allowed"
               />
             </div>
-
-            {/* ID Number */}
             <div className="w-full mb-4">
-              <label
-                className="block text-gray-700 font-bold mb-2"
-                htmlFor="idNumber"
-              >
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="idNumber">
                 ΑΔΤ
               </label>
               <input
@@ -154,13 +126,8 @@ const Profil_Epej = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100 cursor-not-allowed"
               />
             </div>
-
-            {/* Phone */}
             <div className="w-full mb-4">
-              <label
-                className="block text-gray-700 font-bold mb-2"
-                htmlFor="phone"
-              >
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="phone">
                 Τηλέφωνο
               </label>
               <input
@@ -171,13 +138,8 @@ const Profil_Epej = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100 cursor-not-allowed"
               />
             </div>
-
-            {/* Email */}
             <div className="w-full mb-6">
-              <label
-                className="block text-gray-700 font-bold mb-2"
-                htmlFor="email"
-              >
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
                 Email
               </label>
               <input
@@ -193,10 +155,7 @@ const Profil_Epej = () => {
 
         {/* About Me */}
         <div className="mt-6 flex flex-col items-center">
-          <label
-            className="block text-gray-700 font-bold mb-2"
-            htmlFor="aboutMe"
-          >
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="aboutMe">
             Σχετικά με εμένα
           </label>
           <textarea
@@ -227,35 +186,35 @@ const Profil_Epej = () => {
         </div>
       </div>
 
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded shadow-lg p-8 text-center relative w-96">
-            <div className="text-green-600 mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-12 h-12 mx-auto"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 12l2 2 4-4m0 0a9 9 0 11-6 6"
-                />
-              </svg>
-            </div>
-            <p className="text-lg font-bold">Αποθηκεύτηκε με επιτυχία!</p>
-            <button
-              className="mt-4 bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded"
-              onClick={closeModalAndRedirect}
-            >
-              Κλείσιμο
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Success Modal */}
+      <Modal open={successModalOpen} onClose={handleCloseSuccessModal}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+            textAlign: "center",
+          }}
+        >
+          <CheckCircleIcon sx={{ fontSize: 60, color: "green", mb: 2 }} />
+          <Typography variant="h4" sx={{ fontWeight: "bold" }} gutterBottom>
+            Αποθηκεύτηκε με επιτυχία!
+          </Typography>
+          <button
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+            onClick={handleCloseSuccessModal}
+          >
+            Κλείσιμο
+          </button>
+        </Box>
+      </Modal>
+
       <Footer />
     </div>
   );
