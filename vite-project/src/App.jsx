@@ -21,6 +21,7 @@ import G_istoriko_aitisewn from "./routes/g_istoriko_aitisewn"
 import G_istoriko_rantevou from "./routes/g_istoriko_rantevou"
 import G_synergasies from "./routes/g_synergasies"
 import G_anazitisi_epaggelmatiwn from "./routes/g_anazitisi_epaggelmatiwn"
+import Proboli_profil from "./routes/proboli_profil"
 
 // https://www.figma.com/design/n77y1eExg5FYmlzcq20kI4/EAM?node-id=148-3317&t=lTpNKkdTKZ1vMwee-0
 
@@ -43,6 +44,7 @@ function App() {
         <Route path="/g_istoriko_rantevou" element={<G_istoriko_rantevou />}/>
         <Route path="/g_synergasies" element={<G_synergasies />}/>
         <Route path="/g_anazitisi_epaggelmatiwn" element={<G_anazitisi_epaggelmatiwn />}/>
+        <Route path="/g_anazitisi_epaggelmatiwn/proboli_profil/:id" element={<Proboli_profil />} /> {/* Dynamic route */}
         
 
 
