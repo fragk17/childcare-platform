@@ -53,7 +53,7 @@ const Profil_Epej = () => {
 
   const handleCloseRejectModal = () => {
     setRejectModalOpen(false);
-    navigate("/profil", { state: { aboutMe: originalAboutMe } });
+    navigate(-1, { state: { aboutMe: originalAboutMe } });
   };
 
   return (
