@@ -344,7 +344,7 @@ import {
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { addDoc, collection } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { FIREBASE_AUTH, FIREBASE_DB } from "../config/firebase"; // Correct Firebase imports
 
 const theme = createTheme({
   palette: {
@@ -390,10 +390,10 @@ const E_Dimiourgia_aggelias = () => {
   };
 
   const handleSubmit = async () => {
-    const user = auth.currentUser;
+    const user = FIREBASE_AUTH.currentUser;
     if (user) {
       try {
-        await addDoc(collection(db, "aggelies"), {
+        await addDoc(collection(FIREBASE_DB, "aggelies"), {
           uid: user.uid,
           availability,
           employment,

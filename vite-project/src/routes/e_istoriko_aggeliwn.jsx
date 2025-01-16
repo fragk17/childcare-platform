@@ -150,7 +150,7 @@ import BackButton from "../components/back_button";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { FIREBASE_AUTH, FIREBASE_DB } from "../config/firebase"; // Correct Firebase imports
 
 const E_istoriko_aggeliwn = () => {
   const [historyItems, setHistoryItems] = useState([]);
@@ -160,9 +160,9 @@ const E_istoriko_aggeliwn = () => {
 
   useEffect(() => {
     const fetchUserAggelies = async () => {
-      const user = auth.currentUser;
+      const user = FIREBASE_AUTH.currentUser;
       if (user) {
-        const q = query(collection(db, "aggelies"), where("uid", "==", user.uid));
+        const q = query(collection(FIREBASE_DB, "aggelies"), where("uid", "==", user.uid));
         const querySnapshot = await getDocs(q);
         const userAggelies = querySnapshot.docs.map(doc => ({
           id: doc.id,
