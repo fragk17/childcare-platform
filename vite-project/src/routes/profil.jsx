@@ -693,7 +693,7 @@ import { onAuthStateChanged } from "firebase/auth"; // Listen to user login stat
 import { FIREBASE_AUTH, FIREBASE_DB } from "../config/firebase"; // Correct Firebase imports
 import Navbar_in from "../components/navbar_in";
 import Footer from "../components/footer";
-import BackButton from "../components/back_button";
+import SpecialBackButton1 from "../components/special_back_button1";
 import image from "../assets/ima.jpg";
 import { useNavigate } from "react-router-dom";
 
@@ -762,7 +762,7 @@ const Profil = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      <BackButton />
+      <SpecialBackButton1 />
       <Navbar_in />
       <div className="flex-grow p-8">
         <h1 className="text-2xl font-bold text-center mb-6">ΠΡΟΦΙΛ</h1>
