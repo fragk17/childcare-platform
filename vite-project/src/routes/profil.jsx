@@ -261,8 +261,15 @@ const Profil = () => {
   }, [navigate]);
 
   const handleEditProfile = () => {
-    navigate("/profil_epej", { state: { aboutMe } });
+    const currentUser = FIREBASE_AUTH.currentUser;
+    if (currentUser) {
+      navigate("/profil_epej", { state: { uid: currentUser.uid, aboutMe } });
+    } else {
+      console.error("User is not authenticated.");
+      navigate("/login");
+    }
   };
+  
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">

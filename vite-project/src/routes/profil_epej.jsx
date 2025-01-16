@@ -263,59 +263,58 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { FIREBASE_DB } from "../config/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore"; // Firestore methods
 import Navbar_in from "../components/navbar_in";
 import Footer from "../components/footer";
 import BackButton from "../components/back_button";
+import image from "../assets/ima.jpg";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Typography from "@mui/material/Typography";
+import { FIREBASE_DB } from "../config/firebase";
 
 const Profil_Epej = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [profileData, setProfileData] = useState({
+  const { uid } = location.state || {};
+
+  const [profileImage, setProfileImage] = useState(image);
+  const [formData, setFormData] = useState({
+    name: "",
+    role: "",
+    email: "",
     dateOfBirth: "",
     address: "",
     amka: "",
     idNumber: "",
     phone: "",
-    email: "",
-    aboutMe: "",
   });
-  const [originalData, setOriginalData] = useState({});
+
+  const [originalFormData, setOriginalFormData] = useState({}); // For discarding changes
   const [showModal, setShowModal] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [rejectModalOpen, setRejectModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async (uid) => {
+    const fetchUserData = async () => {
       try {
         const userDoc = doc(FIREBASE_DB, "users", uid);
         const userSnap = await getDoc(userDoc);
 
         if (userSnap.exists()) {
           const data = userSnap.data();
-          setProfileData({
+          const userData = {
+            name: `${data.firstname} ${data.lastname}`,
+            role: data.role === "parent" ? "ΓΟΝΕΑΣ" : "ΕΠΑΓΓΕΛΜΑΤΙΑΣ",
+            email: data.email,
             dateOfBirth: data.dateOfBirth || "",
             address: data.address || "",
             amka: data.amka || "",
             idNumber: data.idNumber || "",
             phone: data.phone || "",
-            email: data.email || "",
-            aboutMe: data.aboutMe || "",
-          });
-          setOriginalData({
-            dateOfBirth: data.dateOfBirth || "",
-            address: data.address || "",
-            amka: data.amka || "",
-            idNumber: data.idNumber || "",
-            phone: data.phone || "",
-            email: data.email || "",
-            aboutMe: data.aboutMe || "",
-          });
+          };
+          setFormData(userData);
+          setOriginalFormData(userData);
         } else {
           console.error("No such document!");
         }
@@ -324,42 +323,42 @@ const Profil_Epej = () => {
       }
     };
 
-    const userId = location.state?.uid; // Pass user ID via location state
-    if (userId) {
-      fetchUserData(userId);
+    if (uid) {
+      fetchUserData();
     } else {
       navigate("/login");
     }
-  }, [location.state?.uid, navigate]);
+  }, [uid, navigate]);
 
   const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setProfileData((prev) => ({ ...prev, [id]: value }));
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSaveClick = async () => {
     try {
-      const userDoc = doc(FIREBASE_DB, "users", location.state?.uid);
-      await updateDoc(userDoc, profileData);
+      const userDoc = doc(FIREBASE_DB, "users", uid);
+      await updateDoc(userDoc, {
+        dateOfBirth: formData.dateOfBirth,
+        address: formData.address,
+        amka: formData.amka,
+        idNumber: formData.idNumber,
+        phone: formData.phone,
+      });
       setSuccessModalOpen(true);
     } catch (error) {
-      console.error("Error saving data:", error);
+      console.error("Error saving user data:", error);
     }
   };
 
   const handleCloseSuccessModal = () => {
     setSuccessModalOpen(false);
-    navigate("/profil", { state: profileData });
+    navigate("/profil", { state: { uid, aboutMe: formData.aboutMe } });
   };
 
   const handleCancelClick = () => {
-    setRejectModalOpen(true);
-  };
-
-  const handleCloseRejectModal = () => {
-    setRejectModalOpen(false);
-    setProfileData(originalData); // Reset to original data
-    navigate(-1, { state: { ...originalData } });
+    setFormData(originalFormData);
+    navigate(-1);
   };
 
   return (
@@ -374,49 +373,45 @@ const Profil_Epej = () => {
             {/* Profile Picture */}
             <div className="relative w-32 h-32 border-2 border-black rounded-full flex items-center justify-center bg-gray-100 mb-4">
               <img
-                src="../assets/ima.jpg"
+                src={profileImage}
                 alt="Profile"
                 className="w-full h-full rounded-full object-cover"
               />
             </div>
 
-            {/* Editable Fields */}
+            {/* Name */}
+            <p className="text-lg font-semibold mb-2">{formData.name}</p>
+
+            {/* Role */}
+            <p className="text-gray-600 mb-4">{formData.role}</p>
+
+            {/* Email */}
+            <p className="text-gray-600 mb-4">{formData.email}</p>
+          </div>
+
+          {/* Right Side */}
+          <div className="flex flex-col items-start pr-8">
             {[
-              { id: "dateOfBirth", label: "Ημερομηνία Γέννησης" },
-              { id: "address", label: "Διεύθυνση Κατοικίας" },
-              { id: "amka", label: "ΑΜΚΑ" },
-              { id: "idNumber", label: "ΑΔΤ" },
-              { id: "phone", label: "Τηλέφωνο" },
-            ].map(({ id, label }) => (
-              <div key={id} className="w-full mb-4">
-                <label className="block text-gray-700 font-bold mb-2" htmlFor={id}>
+              { label: "Ημερομηνία Γέννησης", name: "dateOfBirth" },
+              { label: "Διεύθυνση Κατοικίας", name: "address" },
+              { label: "ΑΜΚΑ", name: "amka" },
+              { label: "ΑΔΤ", name: "idNumber" },
+              { label: "Τηλέφωνο", name: "phone" },
+            ].map(({ label, name }) => (
+              <div className="w-full mb-4" key={name}>
+                <label className="block text-gray-700 font-bold mb-2" htmlFor={name}>
                   {label}
                 </label>
                 <input
-                  id={id}
+                  id={name}
+                  name={name}
                   type="text"
-                  value={profileData[id]}
+                  value={formData[name]}
                   onChange={handleInputChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-white"
                 />
               </div>
             ))}
-          </div>
-
-          {/* About Me */}
-          <div className="mt-6 flex flex-col items-center">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="aboutMe">
-              Σχετικά με εμένα
-            </label>
-            <textarea
-              id="aboutMe"
-              name="aboutMe"
-              value={profileData.aboutMe}
-              onChange={handleInputChange}
-              placeholder="Εισαγωγή κειμένου"
-              className="shadow appearance-none border rounded py-2 px-3 text-gray-700 bg-white"
-              style={{ width: "90%", height: "80px", resize: "none" }}
-            ></textarea>
           </div>
         </div>
 
@@ -466,38 +461,10 @@ const Profil_Epej = () => {
         </Box>
       </Modal>
 
-      {/* Reject Modal */}
-      <Modal open={rejectModalOpen} onClose={() => setRejectModalOpen(false)}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            borderRadius: 2,
-            boxShadow: 24,
-            p: 4,
-            textAlign: "center",
-          }}
-        >
-          <CheckCircleIcon sx={{ fontSize: 60, color: "red", mb: 2 }} />
-          <Typography variant="h4" sx={{ fontWeight: "bold" }} gutterBottom>
-            Οι αλλαγές απορρίφθηκαν!
-          </Typography>
-          <button
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-            onClick={handleCloseRejectModal}
-          >
-            Κλείσιμο
-          </button>
-        </Box>
-      </Modal>
-
       <Footer />
     </div>
   );
 };
 
 export default Profil_Epej;
+
