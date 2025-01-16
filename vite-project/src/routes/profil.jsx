@@ -239,7 +239,7 @@ const Profil = () => {
             ...prev,
             name: `${data.firstname} ${data.lastname}`,
             email: data.email,
-            role: data.role || "Επαγγελματίας", // Default to "Επαγγελματίας" if no role provided
+            role: data.role === "parent" ? "ΓΟΝΕΑΣ" : "ΕΠΑΓΓΕΛΜΑΤΙΑΣ", // Map role to Greek labels
           }));
         } else {
           console.error("No such document!");
@@ -432,5 +432,6 @@ const Profil = () => {
 };
 
 export default Profil;
+
 
 
