@@ -321,9 +321,6 @@
 
 
 
-
-
-
 // import React, { useState } from 'react';
 // import Navbar_in from '../components/navbar_in';
 // import Footer from '../components/footer';
@@ -385,15 +382,7 @@
 //     }
 //   };
 
-//   const handleTemporarySave = () => {
-//     setIsPopupOpen(true);
-//   };
-
-//   const handleClosePopup = () => {
-//     setIsPopupOpen(false);
-//   };
-
-//   const handleSubmit = async () => {
+//   const saveAggelia = async (isTemporary) => {
 //     const user = FIREBASE_AUTH.currentUser;
 //     if (user) {
 //       try {
@@ -405,15 +394,32 @@
 //           specialty,
 //           days,
 //           hours,
+//           isTemporary,
 //           createdAt: new Date(),
 //         });
-//         setIsSubmitPopupOpen(true);
+//         if (isTemporary) {
+//           setIsPopupOpen(true);
+//         } else {
+//           setIsSubmitPopupOpen(true);
+//         }
 //       } catch (error) {
 //         console.error("Error adding document: ", error);
 //       }
 //     } else {
 //       console.log("No user is signed in.");
 //     }
+//   };
+
+//   const handleTemporarySave = () => {
+//     saveAggelia(true);
+//   };
+
+//   const handleSubmit = () => {
+//     saveAggelia(false);
+//   };
+
+//   const handleClosePopup = () => {
+//     setIsPopupOpen(false);
 //   };
 
 //   const handleCloseSubmitPopup = () => {
@@ -661,7 +667,10 @@
 
 
 
-import React, { useState } from 'react';
+
+
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Navbar_in from '../components/navbar_in';
 import Footer from '../components/footer';
 import BackButton from "../components/back_button";
@@ -684,7 +693,7 @@ import {
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { FIREBASE_AUTH, FIREBASE_DB } from "../config/firebase"; // Correct Firebase imports
 
 const theme = createTheme({
@@ -704,6 +713,7 @@ const theme = createTheme({
 });
 
 const E_Dimiourgia_aggelias = () => {
+  const { id } = useParams();
   const [availability, setAvailability] = useState('Ναι');
   const [employment, setEmployment] = useState('Πλήρης');
   const [location, setLocation] = useState('');
@@ -713,6 +723,26 @@ const E_Dimiourgia_aggelias = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSubmitPopupOpen, setIsSubmitPopupOpen] = useState(false);
   const [isfinalSubmitPopupOpen, setIsfinalSubmitPopupOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchAggelia = async () => {
+      if (id) {
+        const docRef = doc(FIREBASE_DB, "aggelies", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setAvailability(data.availability);
+          setEmployment(data.employment);
+          setLocation(data.location);
+          setSpecialty(data.specialty);
+          setDays(data.days);
+          setHours(data.hours);
+        }
+      }
+    };
+
+    fetchAggelia();
+  }, [id]);
 
   const handleDayToggle = (day) => {
     if (days.includes(day)) {

@@ -98,6 +98,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Proboli_profil from "./routes/proboli_profil";
 import Profil from "./routes/profil"
 import Profil_Epej from "./routes/profil_epej"
+import Epej_Aggelias from "./routes/epej_aggelias";
 
 function App() {
   return (
@@ -243,6 +244,14 @@ function App() {
           element={
             <ProtectedRoute allowedRole="professional">
               <E_rantevou />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/epej_aggelias/:id"
+          element={
+            <ProtectedRoute allowedRole="professional">
+              <Epej_Aggelias />
             </ProtectedRoute>
           }
         />
