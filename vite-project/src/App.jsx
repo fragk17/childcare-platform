@@ -98,7 +98,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Proboli_profil from "./routes/proboli_profil";
 import Profil from "./routes/profil"
 import Profil_Epej from "./routes/profil_epej"
-import Epej_Aggelias from "./routes/epej_aggelias";
+import Epej_Aggelias from "./routes/g_epej_aggelias";
+import Epej_Aitisis from "./routes/e_epej_aitisis";
 
 function App() {
   return (
@@ -145,6 +146,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/epej_aitisis/:id"
+          element={
+            <ProtectedRoute allowedRole="parent">
+              <Epej_Aitisis />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/g_istoriko_rantevou"
           element={

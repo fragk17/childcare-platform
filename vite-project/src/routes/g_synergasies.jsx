@@ -219,7 +219,7 @@ const handleSubmitRating = () => {
             <h2 className="text-lg font-semibold mb-4">
               Είστε βέβαιοι ότι θέλετε να ολοκληρώσετε τη συνεργασία με τον/την {selectedUser};
             </h2>
-            <div className="flex justify-end space-x-2">
+            <div className="flex justify-between space-x-4">
               <button
                 onClick={closeModal}
                 className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
