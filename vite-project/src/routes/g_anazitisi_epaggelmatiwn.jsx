@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FIREBASE_AUTH, FIREBASE_DB } from '../config/firebase'; // Firebase setup
+import { FIREBASE_DB } from '../config/firebase'; // Firebase setup
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import Navbar_in from '../components/navbar_in';
 import Footer from '../components/footer';
@@ -60,31 +60,14 @@ const G_anazitisi_epaggelmatiwn = () => {
   const applyFilters = async () => {
     const aggeliesRef = collection(FIREBASE_DB, 'aggelies');
     const usersRef = collection(FIREBASE_DB, 'users');
-    let userQuery;
     let userMap = new Map();
 
-    // Handle experience filter
-    if (filters.experience) {
-      switch (filters.experience) {
-        case '0-1':
-          userQuery = query(usersRef, where('Experience', '<=', 1));
-          break;
-        case '1-3':
-          userQuery = query(usersRef, where('Experience', '>=', 1), where('Experience', '<=', 3));
-          break;
-        case '3+':
-          userQuery = query(usersRef, where('Experience', '>=', 3));
-          break;
-        default:
-          break;
-      }
-
-      const userSnapshot = await getDocs(userQuery);
-      userSnapshot.forEach((doc) => {
-        const data = doc.data();
-        userMap.set(doc.id, data.Experience); // Map uid to Experience
-      });
-    }
+    // Fetch all users and map them by uid
+    const userSnapshot = await getDocs(usersRef);
+    userSnapshot.forEach((doc) => {
+      const data = doc.data();
+      userMap.set(doc.id, data); // Map uid to user data
+    });
 
     let q = query(aggeliesRef);
 
@@ -98,7 +81,7 @@ const G_anazitisi_epaggelmatiwn = () => {
       ? specialtyMapping[filters.specialty] || filters.specialty
       : '';
 
-    // Apply additional filters dynamically
+    // Apply additional filters dynamically to aggelies
     if (selectedLocation) q = query(q, where('location', '==', selectedLocation));
     if (selectedSpecialty) q = query(q, where('specialty', '==', selectedSpecialty));
     if (filters.employmentType) q = query(q, where('employment', '==', filters.employmentType));
@@ -111,20 +94,26 @@ const G_anazitisi_epaggelmatiwn = () => {
     aggeliesSnapshot.forEach((doc) => {
       const data = doc.data();
 
-      // Match aggelies with users based on uid if experience filter is applied
-      const matchExperience = !filters.experience || userMap.has(data.uid);
+      // Match aggelies with users based on uid
+      const userData = userMap.get(data.uid);
       const matchDays =
-        filters.days.length === 0 || filters.days.every((day) => data[day]);
+        filters.days.length === 0 || filters.days.every((day) => data.days?.includes(day));
       const matchHours =
         filters.hours[0] <= parseInt(data.hours.end) &&
         filters.hours[1] >= parseInt(data.hours.start);
 
-      if (matchExperience && matchDays && matchHours) {
-        // Map English location back to Greek for display
-        data.location = locationMapping[data.location] || data.location;
-        data.specialty = Object.keys(specialtyMapping).find(key => specialtyMapping[key] === data.specialty) || data.specialty;
-        data.experience = userMap.get(data.uid) || 'N/A'; // Add experience to data
-        filteredResults.push({ id: doc.id, ...data });
+      if (userData && matchDays && matchHours) {
+        // Merge users and aggelies data for display
+        const combinedData = {
+          ...data,
+          ...userData,
+          location: locationMapping[data.location] || data.location,
+          specialty:
+            Object.keys(specialtyMapping).find((key) => specialtyMapping[key] === data.specialty) ||
+            data.specialty,
+          experience: userData?.experience || 'N/A',
+        };
+        filteredResults.push({ id: doc.id, ...combinedData });
       }
     });
 
@@ -238,10 +227,9 @@ const G_anazitisi_epaggelmatiwn = () => {
                       Διαθέσιμος: {result.isTemporary ? 'Ναι' : 'Όχι'}
                     </p>
                     <Link
-                      to={`/g_anazitisi_epaggelmatiwn/proboli_profil/${result.id}`}
+                      to={`/g_anazitisi_epaggelmatiwn/proboli_profil/${result.uid}`}
                       state={{
-                        id: result.id,
-                        ...result,
+                        id: result.uid,
                       }}
                       className="mt-2 inline-block bg-blue-500 text-white px-3 py-1 rounded"
                     >
