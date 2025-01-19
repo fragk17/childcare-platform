@@ -195,8 +195,9 @@ const Epej_Aggelias = () => {
                 onChange={(e) => setSpecialty(e.target.value)}
               >
                 <MenuItem value="">Επιλογή</MenuItem>
-                <MenuItem value="teacher">Δάσκαλος</MenuItem>
-                <MenuItem value="nurse">Νοσοκόμος</MenuItem>
+                <MenuItem value="CPR">CPR</MenuItem>
+                <MenuItem value="Πρώτες Βοήθειες">Πρώτες Βοήθειες</MenuItem>
+                <MenuItem value="Πιστοποίηση φροντίδας παιδιών">Πιστοποίηση φροντίδας παιδιών</MenuItem>
               </Select>
             </Box>
 

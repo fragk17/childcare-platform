@@ -98,8 +98,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Proboli_profil from "./routes/proboli_profil";
 import Profil from "./routes/profil"
 import Profil_Epej from "./routes/profil_epej"
-import Epej_Aggelias from "./routes/g_epej_aggelias";
-import Epej_Aitisis from "./routes/e_epej_aitisis";
+import Epej_Aggelias from "./routes/e_epej_aggelias";
+import Epej_Aitisis from "./routes/g_epej_aitisis";
 
 function App() {
   return (

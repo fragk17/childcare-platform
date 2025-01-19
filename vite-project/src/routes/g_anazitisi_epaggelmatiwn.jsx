@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FIREBASE_AUTH, FIREBASE_DB } from '../config/firebase'; // Firebase setup
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import Navbar_in from '../components/navbar_in';
 import Footer from '../components/footer';
 import BackButton from '../components/back_button';
@@ -6,26 +8,37 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
-
 const G_anazitisi_epaggelmatiwn = () => {
   const [filters, setFilters] = useState({
     location: '',
-    childAge: '',
     employmentType: '',
     days: [],
     hours: [9, 20],
     availability: '',
     specialty: '',
-    experience: ''
+    experience: '',
   });
-  const [results, setResults] = useState([]); // To store filtered results
-  const [showResults, setShowResults] = useState(false); // To toggle results section visibility
+  const [results, setResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+
+  const locationMapping = {
+    Αθήνα: 'Athens',
+    Θεσσαλονίκη: 'Thessaloniki',
+    Athens: 'Αθήνα',
+    Thessaloniki: 'Θεσσαλονίκη',
+  };
+
+  const specialtyMapping = {
+    'Πρώτες Βοήθειες': 'FirstAid',
+    'CPR': 'CPR',
+    'Πιστοποίηση Φροντίδας Παιδιών': 'ChildCareCertification',
+  };
 
   const handleFilterChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFilters((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value,
     }));
   };
 
@@ -40,42 +53,83 @@ const G_anazitisi_epaggelmatiwn = () => {
       ...prev,
       days: prev.days.includes(day)
         ? prev.days.filter((d) => d !== day)
-        : [...prev.days, day]
+        : [...prev.days, day],
     }));
   };
 
-  const applyFilters = () => {
+  const applyFilters = async () => {
+    const aggeliesRef = collection(FIREBASE_DB, 'aggelies');
+    const usersRef = collection(FIREBASE_DB, 'users');
+    let userQuery;
+    let userMap = new Map();
 
-    const dummyData = [
-        { id: 'Μαρία Μάνου', experience: '5+', availability: 'yes', employmentType: 'full', location: 'Αθήνα', specialty: 'Πρώτες Βοήθειες', days: ['Mon', 'Tue', 'Wed'], hours: [9, 17], aboutMe: 'Είμαι έμπειρη νηπιαγωγός με πάθος για τη φροντίδα των παιδιών.', rating: 4.5 },
-        { id: 'Γιώργος Παπαδόπουλος', experience: '3-5', availability: 'no', employmentType: 'partial', location: 'Θεσσαλονίκη', specialty: 'CPR', days: ['Tue', 'Wed', 'Thu'], hours: [10, 15], aboutMe: 'Αγαπώ να δημιουργώ ασφαλές και χαρούμενο περιβάλλον για τα παιδιά.', rating: 4.0 },
-        { id: 'Ελένη Κωνσταντίνου', experience: '1-3', availability: 'yes', employmentType: 'full', location: 'Αθήνα', specialty: 'Πιστοποίηση Φροντίδας Παιδιών', days: ['Fri', 'Sat', 'Sun'], hours: [8, 14], aboutMe: 'Είμαι αφοσιωμένη στη φροντίδα και την ανάπτυξη των παιδιών.', rating: 3.5 },
-        { id: 'Νίκος Παπαδόπουλος', experience: '5+', availability: 'no', employmentType: 'partial', location: 'Θεσσαλονίκη', specialty: 'Πρώτες Βοήθειες', days: ['Mon', 'Tue'], hours: [14, 20], aboutMe: 'Έχω πολυετή εμπειρία στη διδασκαλία και τη φροντίδα παιδιών.', rating: 4.2 },
-        { id: 'Άννα Παπαδοπούλου', experience: '0-1', availability: 'yes', employmentType: 'full', location: 'Θεσσαλονίκη', specialty: 'CPR', days: ['Sat', 'Sun'], hours: [9, 12], aboutMe: 'Είμαι νέα ψυχολόγος με αγάπη για την παιδική ψυχολογία.', rating: 3.8 },
-        { id: 'Κώστας Νικολάου', experience: '3-5', availability: 'yes', employmentType: 'full', location: 'Αθήνα', specialty: 'Πιστοποίηση Φροντίδας Παιδιών', days: ['Mon', 'Tue', 'Thu'], hours: [8, 16], aboutMe: 'Αφοσιωμένος στη δημιουργία ενός υποστηρικτικού περιβάλλοντος για τα παιδιά.', rating: 4.7 },
-        { id: 'Σοφία Καραγιάννη', experience: '2-4', availability: 'yes', employmentType: 'partial', location: 'Θεσσαλονίκη', specialty: 'Πρώτες Βοήθειες', days: ['Wed', 'Thu', 'Fri'], hours: [10, 18], aboutMe: 'Λατρεύω να διδάσκω και να φροντίζω τα παιδιά με δημιουργικό τρόπο.', rating: 4.3 },
-        { id: 'Πέτρος Δημητρίου', experience: '4-6', availability: 'no', employmentType: 'full', location: 'Αθήνα', specialty: 'CPR', days: ['Mon', 'Wed', 'Fri'], hours: [9, 17], aboutMe: 'Έχω εμπειρία στη διδασκαλία και την ανάπτυξη παιδιών.', rating: 4.1 },
-        { id: 'Ανδρέας Παπακωνσταντίνου', experience: '1-2', availability: 'yes', employmentType: 'partial', location: 'Θεσσαλονίκη', specialty: 'Πιστοποίηση Φροντίδας Παιδιών', days: ['Tue', 'Thu'], hours: [11, 15], aboutMe: 'Είμαι σύμβουλος με έμφαση στην ανάπτυξη των παιδιών.', rating: 3.9 },
-        { id: 'Κατερίνα Σταυροπούλου', experience: '5+', availability: 'yes', employmentType: 'full', location: 'Αθήνα', specialty: 'Πρώτες Βοήθειες', days: ['Mon', 'Tue', 'Wed'], hours: [8, 16], aboutMe: 'Ασχολούμαι με την παιδική ψυχολογία και την υποστήριξη των παιδιών.', rating: 4.6 },
-        { id: 'Δημήτρης Αλεξίου', experience: '0-1', availability: 'no', employmentType: 'partial', location: 'Αθήνα', specialty: 'CPR', days: ['Thu', 'Fri'], hours: [12, 18], aboutMe: 'Είμαι νέος εκπαιδευτικός με όρεξη για τη φροντίδα των παιδιών.', rating: 3.7 }
-      ];
-      
-      
+    // Handle experience filter
+    if (filters.experience) {
+      switch (filters.experience) {
+        case '0-1':
+          userQuery = query(usersRef, where('Experience', '<=', 1));
+          break;
+        case '1-3':
+          userQuery = query(usersRef, where('Experience', '>=', 1), where('Experience', '<=', 3));
+          break;
+        case '3+':
+          userQuery = query(usersRef, where('Experience', '>=', 3));
+          break;
+        default:
+          break;
+      }
 
-    const filteredResults = dummyData.filter((item) => {
-      return (
-        (!filters.location || item.location === filters.location) &&
-        (!filters.specialty || item.specialty === filters.specialty) &&
-        (!filters.experience || item.experience === filters.experience) &&
-        (!filters.availability || item.availability === filters.availability) &&
-        (!filters.employmentType || item.employmentType === filters.employmentType) &&
-        (filters.days.length === 0 || filters.days.every((day) => item.days.includes(day))) &&
-        (filters.hours[0] <= item.hours[1] && filters.hours[1] >= item.hours[0])
-      );
+      const userSnapshot = await getDocs(userQuery);
+      userSnapshot.forEach((doc) => {
+        const data = doc.data();
+        userMap.set(doc.id, data.Experience); // Map uid to Experience
+      });
+    }
+
+    let q = query(aggeliesRef);
+
+    // Map Greek location to English before querying
+    const selectedLocation = filters.location
+      ? locationMapping[filters.location] || filters.location
+      : '';
+
+    // Map Greek specialty to English before querying
+    const selectedSpecialty = filters.specialty
+      ? specialtyMapping[filters.specialty] || filters.specialty
+      : '';
+
+    // Apply additional filters dynamically
+    if (selectedLocation) q = query(q, where('location', '==', selectedLocation));
+    if (selectedSpecialty) q = query(q, where('specialty', '==', selectedSpecialty));
+    if (filters.employmentType) q = query(q, where('employment', '==', filters.employmentType));
+    if (filters.availability) q = query(q, where('isTemporary', '==', filters.availability === 'yes'));
+
+    // Fetch data from aggelies
+    const aggeliesSnapshot = await getDocs(q);
+    const filteredResults = [];
+
+    aggeliesSnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      // Match aggelies with users based on uid if experience filter is applied
+      const matchExperience = !filters.experience || userMap.has(data.uid);
+      const matchDays =
+        filters.days.length === 0 || filters.days.every((day) => data[day]);
+      const matchHours =
+        filters.hours[0] <= parseInt(data.hours.end) &&
+        filters.hours[1] >= parseInt(data.hours.start);
+
+      if (matchExperience && matchDays && matchHours) {
+        // Map English location back to Greek for display
+        data.location = locationMapping[data.location] || data.location;
+        data.specialty = Object.keys(specialtyMapping).find(key => specialtyMapping[key] === data.specialty) || data.specialty;
+        data.experience = userMap.get(data.uid) || 'N/A'; // Add experience to data
+        filteredResults.push({ id: doc.id, ...data });
+      }
     });
 
     setResults(filteredResults);
-    setShowResults(true); // Show the results section
+    setShowResults(true);
   };
 
   return (
@@ -91,13 +145,12 @@ const G_anazitisi_epaggelmatiwn = () => {
             onClick={() => {
               setFilters({
                 location: '',
-                childAge: '',
                 employmentType: '',
                 days: [],
                 hours: [9, 20],
                 availability: '',
                 specialty: '',
-                experience: ''
+                experience: '',
               });
               setShowResults(false);
             }}
@@ -142,39 +195,15 @@ const G_anazitisi_epaggelmatiwn = () => {
               onChange={handleFilterChange}
               className="w-full p-2 border rounded"
             >
-              <option value="">Επιλογή</option>
-              <option value="0-1">0-1</option>
-              <option value="1-3">1-3</option>
-              <option value="3-5">3-5</option>
-              <option value="5+">5+</option>
+              <option value="">Επιλέξτε</option>
+              <option value="0-1">0-1 έτος</option>
+              <option value="1-3">1-3 έτη</option>
+              <option value="3+">3+ έτη</option>
             </select>
           </div>
-          {/* Διαθεσιμότητα */}
+          {/* Απασχόληση */}
           <div className="mb-4">
-            <label>
-              <input
-                type="radio"
-                name="availability"
-                value="yes"
-                checked={filters.availability === 'yes'}
-                onChange={handleFilterChange}
-              />{' '}
-              Διαθέσιμος
-            </label>
-            <label className="ml-4">
-              <input
-                type="radio"
-                name="availability"
-                value="no"
-                checked={filters.availability === 'no'}
-                onChange={handleFilterChange}
-              />{' '}
-              Μη Διαθέσιμος
-            </label>
-          </div>
-          {/* Χρόνος Απασχόλησης */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Χρόνος Απασχόλησης</label>
+            <label className="block text-sm font-medium">Απασχόληση</label>
             <select
               name="employmentType"
               value={filters.employmentType}
@@ -182,8 +211,8 @@ const G_anazitisi_epaggelmatiwn = () => {
               className="w-full p-2 border rounded"
             >
               <option value="">Επιλογή</option>
-              <option value="full">Πλήρης</option>
-              <option value="partial">Μερική</option>
+              <option value="Πλήρης">Πλήρης</option>
+              <option value="Μερική">Μερική</option>
             </select>
           </div>
           <button className="w-full mt-4 bg-blue-500 text-white py-2 rounded" onClick={applyFilters}>
@@ -199,40 +228,25 @@ const G_anazitisi_epaggelmatiwn = () => {
               <div className="grid grid-cols-3 gap-4">
                 {results.map((result) => (
                   <div key={result.id} className="p-4 border rounded bg-white shadow">
-                    {/* <div className="mb-2 h-20 bg-gray-300">Εικόνα</div> */}
                     <div className="mb-2 h-20 flex justify-center items-center">
-                        <FontAwesomeIcon icon={faUserCircle} size="3x" className="text-gray-500" />
+                      <FontAwesomeIcon icon={faUserCircle} size="3x" className="text-gray-500" />
                     </div>
                     <p className="text-sm">Χρόνια Εμπειρίας: {result.experience}</p>
                     <p className="text-sm">Ειδίκευση: {result.specialty}</p>
                     <p className="text-sm">Τοποθεσία: {result.location}</p>
-                    <p className="text-sm">Διαθέσιμος: {result.availability === 'yes' ? 'Ναι' : 'Όχι'}</p>
-                    {/* <a
-                      href={`g_anazitisi_epaggelmatiwn/proboli_profil/${result.id}`}
+                    <p className="text-sm">
+                      Διαθέσιμος: {result.isTemporary ? 'Ναι' : 'Όχι'}
+                    </p>
+                    <Link
+                      to={`/g_anazitisi_epaggelmatiwn/proboli_profil/${result.id}`}
+                      state={{
+                        id: result.id,
+                        ...result,
+                      }}
                       className="mt-2 inline-block bg-blue-500 text-white px-3 py-1 rounded"
                     >
                       View Profile
-                    </a> */}
-                    <Link
-                            to={`/g_anazitisi_epaggelmatiwn/proboli_profil/${result.id}`}
-                            state={{ 
-                                id: result.id,
-                                experience: result.experience,
-                                availability: result.availability,
-                                employmentType: result.employmentType,
-                                location: result.location,
-                                specialty: result.specialty,
-                                days: result.days,
-                                hours: result.hours,
-                                aboutMe: result.aboutMe,
-                                rating: result.rating
-                            }}
-                            className="mt-2 inline-block bg-blue-500 text-white px-3 py-1 rounded"
-                            >
-                            View Profile
-                            </Link>
-
-
+                    </Link>
                   </div>
                 ))}
               </div>
