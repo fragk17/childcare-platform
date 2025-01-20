@@ -64,12 +64,6 @@ const E_rantevou = () => {
     setIsAcceptModalOpen(true);
   };
 
-//   const handleFinalSubmitPopup = () => {
-//     setIsAcceptModalOpen(false);
-//     setActiveAppointments(activeAppointments.filter(appt => appt.id !== selectedAppointment.id));
-//     closeModal();
-//     setIsFinalSubmitPopupOpen(true);
-//   };
 
 const handleFinalSubmitPopup = () => {
     setIsAcceptModalOpen(false);
